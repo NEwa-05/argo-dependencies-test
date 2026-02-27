@@ -17,4 +17,4 @@ maintainers:
 dependencies:
   - name: traefik
     version: v39.0.2
-    repository: https://github.com/traefik/traefik-helm-chart/traefik
+    repository: https://traefik.github.io/charts
