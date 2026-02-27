@@ -9,7 +9,7 @@ generators:
 helmCharts:
   - name: traefik
     includeCRDs: true
-    repo: https://traefik.github.io/charts
+    repo: https://github.com/NEwa-05/argo-dependencies-test/tree/main/charts/hub-apim-dependency
     releaseName: traefik
     namespace: traefik
     valuesFile: hub-values.yaml
