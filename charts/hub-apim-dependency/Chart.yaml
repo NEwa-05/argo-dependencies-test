@@ -6,7 +6,7 @@ name: hub-apim-dependency
 version: 1.0.0
 home: https://github.com/NEwa-05/argo-dependencies-test
 sources:
-  - https://github.com/NEwa-05/argo-dependencies-test/tree/localdemo/charts/hub-apim-dependency
+  - https://github.com/NEwa-05/argo-dependencies-test/tree/localdemo/charts
 keywords:
   - hub-apim-dependency
   - hub
