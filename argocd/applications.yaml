@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    path: hubapim
+    path: hubapim/overlays/hubapimv1
     repoURL: https://github.com/NEwa-05/argo-dependencies-test.git
     targetRevision: localdemo
   destination:

@@ -9,7 +9,7 @@ generators:
 helmCharts:
   - name: traefik
     includeCRDs: true
-    repo: https://traefik.github.io/charts
+    repo: ../../../charts/hub-apim-dependency
     releaseName: traefik
     namespace: traefik
     valuesFile: hub-values.yaml

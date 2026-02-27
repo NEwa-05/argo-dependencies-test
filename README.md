@@ -74,5 +74,7 @@ sops -e -i hubapim/overlays/hubapimv2/oidc-secret.yaml
 
 ```bash
 helm upgrade --install argocd argo-cd/argo-cd -f argocd/values.yaml --namespace argocd --create-namespace --set configs.secret.argocdServerAdminPassword=${ARGO_PWD_ENCRYPTED}
+cat age.agekey | kubectl create secret generic sops-age --namespace=argocd --from-file=age.agekey=/dev/stdin
+kubectl apply -f tools/argocd/applications.yaml
 ```
 
