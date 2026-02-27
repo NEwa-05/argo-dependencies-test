@@ -12,7 +12,6 @@ apim:
     issuerUrl: https://lemur-3.cloud-iam.com/auth/realms/localdemo
     secretName: oidc-cred
 traefikHub:
-  enabled: true
   image:
     registry: ghcr.io
     repository: traefik/traefik-hub
