@@ -10,6 +10,6 @@ spec:
   source:
     path: hubapim
     repoURL: https://github.com/NEwa-05/argo-dependencies-test.git
-    targetRevision: main
+    targetRevision: localdemo
   destination:
     server: 'https://kubernetes.default.svc'
