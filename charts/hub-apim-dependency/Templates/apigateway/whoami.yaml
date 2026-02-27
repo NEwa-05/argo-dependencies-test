@@ -1,0 +1,53 @@
+{{- if $.Values.apigateway.enabled }}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: apps
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: whoami-noui
+  namespace: apps
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: whoami-noui
+  template:
+    metadata:
+      labels:
+        app: whoami-noui
+    spec:
+      containers:
+      - name: whoami-noui
+        resources:
+          requests:
+            memory: "32Mi"
+            cpu: "50m"
+          limits:
+            memory: "32Mi"
+            cpu: "50m"  
+        image: traefik/whoami
+        env:
+          - name: WHOAMI_NAME
+            value: k8s
+        imagePullPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: whoami-noui
+  namespace: apps
+  labels:
+    app: whoami-noui
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    name: whoami-noui
+  selector:
+    app: whoami-noui

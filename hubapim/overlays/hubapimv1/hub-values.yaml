@@ -1,0 +1,80 @@
+global:
+  domainName: mageekbox.eu
+  clusterName: localdemo
+apigateway:
+  enabled: true
+apim:
+  enabled: true
+  apiAuth:
+    jwksUrl: https://lemur-3.cloud-iam.com/auth/realms/localdemo/protocol/openid-connect/certs
+    appIdClaim: azp
+  apiPortalAuth:
+    issuerUrl: https://lemur-3.cloud-iam.com/auth/realms/localdemo
+    secretName: oidc-cred
+traefikHub:
+  enabled: true
+  image:
+    registry: ghcr.io
+    repository: traefik/traefik-hub
+    tag: "v3.19.2"
+    pullPolicy: Always
+  deployment:
+    replicas: 1
+  ingressRoute:
+    dashboard:
+      enabled: false
+  ingressClass:
+    enabled: false
+  providers:
+    kubernetesCRD:
+      enabled: true
+      allowCrossNamespace: true
+      allowExternalNameServices: true
+      allowEmptyServices: true
+  logs:
+    general:
+      format: json
+      level: DEBUG
+    access:
+      enabled: true
+      format: json
+      addInternals: false
+      fields:
+        general:
+          defaultmode: keep
+        headers:
+          defaultmode: keep
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+                - key: "app.kubernetes.io/name"
+                  operator: In
+                  values:
+                    - traefik
+            topologyKey: kubernetes.io/hostname
+          weight: 100
+  resources:
+    requests:
+      memory: 384Mi
+      cpu: 200m
+    limits:
+      memory: 384Mi
+      cpu: 200m
+  tlsStore:
+    default:
+      defaultCertificate:
+        secretName: wildcard-mageekbox
+  ports:
+    websecure:
+      http:
+        tls:
+          enabled: true
+  hub:
+    token: hub-license
+    apimanagement:
+      enabled: true
+    redis:
+      endpoints: redis-stack-server.redis.svc.cluster.local:6379

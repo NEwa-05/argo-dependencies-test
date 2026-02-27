@@ -1,0 +1,13 @@
+{{- if $.Values.apim.enabled }}
+---
+apiVersion: hub.traefik.io/v1alpha1
+kind: APICatalogItem
+metadata:
+  name: internal-api-catalog-planstd
+  namespace: apps
+spec:
+  apis:
+  - name: employee-api
+  everyone: true
+  apiPlan:
+    name: standard

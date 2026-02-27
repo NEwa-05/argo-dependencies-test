@@ -1,0 +1,16 @@
+{{- if $.Values.apim.enabled }}
+---
+apiVersion: hub.traefik.io/v1alpha1
+kind: ManagedSubscription
+metadata:
+  name: employees-managed-subscription
+  namespace: apps
+spec:
+  apiPlan:
+    name: standard
+  apis:
+    - name: employee-api
+  # applications:
+  #   - appId: employees
+  managedApplications:
+    - name: employees-managedapplication

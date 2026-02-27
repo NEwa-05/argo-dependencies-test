@@ -1,0 +1,14 @@
+{{- if $.Values.apim.enabled }}
+---
+apiVersion: hub.traefik.io/v1alpha1
+kind: API
+metadata:
+  name: employee-api
+  namespace: apps
+  labels:
+    area: employee
+    module: crm
+spec:
+  openApiSpec:
+    path: /openapi.yaml
+    validateRequestMethodAndPath: false

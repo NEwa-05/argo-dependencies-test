@@ -1,0 +1,11 @@
+{{- if $.Values.apim.enabled }}
+---
+apiVersion: hub.traefik.io/v1alpha1
+kind: ManagedApplication
+metadata:
+  name: employees-managedapplication
+  namespace: apps
+spec:
+  appId: api-int
+  owner: "e.ripley@mail.com"
+  notes: "Employees application"

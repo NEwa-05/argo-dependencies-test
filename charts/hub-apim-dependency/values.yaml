@@ -1,0 +1,15 @@
+global:
+  domainName: mydomain.tld
+  clusterName: myclustername
+apigateway:
+  enabled: false
+apim:
+  enabled: false
+  apiAuth:
+    jwksUrl: https://myjwturl.mydomain.tld
+    appIdClaim: appId
+  apiPortalAuth:
+    issuerUrl: https://myissuer.mydomain.tld
+    secretName: my-oidcsecret
+traefikHub:
+  enabled: true

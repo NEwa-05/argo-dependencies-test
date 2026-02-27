@@ -1,0 +1,5 @@
+.lego
+.env
+.kubeconfig
+age.agekey
+.sops.yaml

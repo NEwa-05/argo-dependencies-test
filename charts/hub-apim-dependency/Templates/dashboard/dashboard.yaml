@@ -1,0 +1,17 @@
+{{- if $.Values.traefikHub.enabled }}
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: hub-dashboard
+  namespace: traefik
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`hub-dashboard.{{ $.Values.global.clusterName }}.{{ $.Values.global.domainName }}`)
+      services:
+        - name: api@internal
+          kind: TraefikService
+  tls: {}

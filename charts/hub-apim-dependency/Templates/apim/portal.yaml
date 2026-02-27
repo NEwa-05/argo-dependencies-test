@@ -1,0 +1,17 @@
+{{- if $.Values.apim.enabled }}
+---
+apiVersion: hub.traefik.io/v1alpha1
+kind: APIPortal
+metadata:
+  name: portal
+  namespace: apps
+spec:
+  title: API Portal
+  description: "Developer Portal"
+  trustedUrls:
+    - https://portal.{{ $.Values.global.clusterName }}.{{ $.Values.global.domainName }}/
+  ui:
+    logoUrl: https://traefik.io/favicon.png
+  auth:
+    name: oidc
+    

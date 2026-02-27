@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: wildcard-mageekbox
+    namespace: traefik
+    annotations:
+        kustomize.config.k8s.io/behavior: replace
+type: kubernetes.io/tls
+data:
+    tls.crt: ${TLSCRT}
+    tls.key: ${TLSKEY}

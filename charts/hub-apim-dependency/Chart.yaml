@@ -1,0 +1,21 @@
+apiVersion: v2
+appVersion: v1.0.0
+kubeVersion: ">=1.25.0-0"
+description: A custom helm chart for validating Hub behavior
+name: hub-apim-dependency
+version: 1.0.0
+home: https://github.com/NEwa-05/argo-dependencies-test
+sources:
+  - https://github.com/NEwa-05/argo-dependencies-test/tree/main/charts/hub-apim-dependency
+  - https://github.com/NEwa-05/argo-dependencies-test
+keywords:
+  - hub-apim-dependency
+  - hub
+  - test
+maintainers:
+  - name: NEwa-05
+dependencies:
+  - name: traefik
+    version: v39.0.2
+    repository: https://github.com/traefik/traefik-helm-chart
+    condition: traefikHub.enabled

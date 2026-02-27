@@ -1,0 +1,95 @@
+global:
+  image:
+    repository: quay.io/argoproj/argocd
+    tag: "v3.3.2"
+    imagePullPolicy: IfNotPresent
+dex:
+  enabled: false
+configs:
+  cm:
+    kustomize.buildOptions: "--enable-helm --enable-alpha-plugins --enable-exec"
+  params:
+    server.insecure: true
+crds:
+  keep: true
+redis:
+  enabled: false    
+externalRedis:
+  host: "redis-stack-server.redis.svc.cluster.local"
+controller:
+  resources:
+    limits:
+      cpu: 1
+      memory: 1024Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi
+server:
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi
+repoServer:
+  resources:
+    limits:
+      cpu: 1
+      memory: 1024Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi
+  volumes:
+    - name: custom-tools
+      emptyDir: {}
+    - name: sops-age
+      secret:
+        secretName: sops-age
+  initContainers:
+    - name: install-ksops
+      image: viaductoss/ksops:v4.3.2
+      command: ["/bin/sh", "-c"]
+      args:
+        - echo "Installing KSOPS...";
+          mv ksops /custom-tools/;
+          mv kustomize /custom-tools/;
+          echo "Done.";
+      volumeMounts:
+        - mountPath: /custom-tools
+          name: custom-tools
+  env:
+    - name: XDG_CONFIG_HOME
+      value: /.config
+    - name: SOPS_AGE_KEY_FILE
+      value: /.config/sops/age/age.agekey
+  volumeMounts:
+    - mountPath: /usr/local/bin/kustomize
+      name: custom-tools
+      subPath: kustomize
+    - mountPath: /usr/local/bin/ksops
+      name: custom-tools
+      subPath: ksops
+      # missing in official docs until EOF
+    - mountPath: /home/argocd/.config/kustomize/plugin/viaduct.ai/v1/ksops/ksops
+      name: custom-tools
+      subPath: ksops
+    - mountPath: /.config/sops/age/age.agekey
+      name: sops-age
+      subPath: age.agekey
+applicationSet:
+  resources:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi
+notifications:
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi

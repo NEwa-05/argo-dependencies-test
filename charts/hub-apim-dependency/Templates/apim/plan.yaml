@@ -1,0 +1,15 @@
+{{- if $.Values.apim.enabled }}
+---
+apiVersion: hub.traefik.io/v1alpha1
+kind: APIPlan
+metadata:
+  name: standard
+  namespace: apps
+spec:
+  quota:
+    limit: 20
+    period: 1h
+  rateLimit:
+    limit: 5
+    period: 10s
+  title: Standard plan

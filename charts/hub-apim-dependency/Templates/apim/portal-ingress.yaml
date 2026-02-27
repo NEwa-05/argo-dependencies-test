@@ -1,0 +1,20 @@
+{{- if $.Values.apim.enabled }}
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: apiportal
+  namespace: apps
+  annotations:
+    hub.traefik.io/api-portal: portal
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - match: Host(`portal.{{ $.Values.global.clusterName }}.{{ $.Values.global.domainName }}`)
+    kind: Rule
+    services:
+    - name: apiportal
+      namespace: traefik
+      port: 9903
+  tls: {}

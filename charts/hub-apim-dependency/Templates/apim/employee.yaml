@@ -1,0 +1,74 @@
+{{- if $.Values.apim.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: employee-data
+  namespace: apps
+data:
+  api.json: |
+    {
+      "employees": {
+        "1": { "firstName": "John", "lastName": "Doe", "role": "pilot", "homeAirport": "RIC" },
+        "2": { "firstName": "Jane", "lastName": "Doe", "role": "engineer", "homeAirport": "CDG" },
+        "3": { "firstName": "John", "lastName": "Smith", "role": "attendant", "homeAirport": "DTW" }
+      }
+    }
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: employee-app-latency
+  namespace: apps
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: employee-app-latency
+  template:
+    metadata:
+      labels:
+        app: employee-app-latency
+    spec:
+      containers:
+        - name: api
+          resources:
+            requests:
+              memory: "32Mi"
+              cpu: "50m"
+            limits:
+              memory: "32Mi"
+              cpu: "50m"
+          image: newa/api-server:v2.0.1
+          args: ["-data", "/api/api.json", "-openapi", "/public/openapi.yaml", "-latency", "400ms"]
+          env:
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: api-data
+              mountPath: /api
+            - name: openapi
+              mountPath: /public
+      volumes:
+        - name: api-data
+          configMap:
+            name: employee-data
+        - name: openapi
+          configMap:
+            name: employee-apispec
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: employee-app-latency
+  namespace: apps
+  labels:
+    app: employee-app-latency
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3000
+      name: api
+  selector:
+    app: employee-app-latency

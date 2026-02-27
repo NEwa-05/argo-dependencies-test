@@ -1,0 +1,19 @@
+{{- if and $.Values.apim.enabled $.Values.apim.apiPortalAuth }}
+---
+apiVersion: hub.traefik.io/v1alpha1
+kind: APIPortalAuth
+metadata:
+  name: oidc
+  namespace: apps
+spec:
+  oidc:
+    issuerUrl: {{ $.Values.apim.apiPortalAuth.issuerUrl }}
+    secretName: {{ $.Values.apim.apiPortalAuth.secretName }}
+    claims:
+      groups: groups
+      userId: preferred_username
+      email: email
+    scopes:
+      - openid
+      - profile
+      - email
